@@ -31,3 +31,19 @@ func Commutator[T any](G Group[T], a T, b T) T {
 func Commutes[T any](G Group[T], a T, b T) bool {
 	return G.Equals(Commutator(G, a, b), G.Identity())
 }
+
+func SubgroupGeneratedBy[T any](G Group[T], x T, max_iter int) Group[T] {
+	
+	if G.order != 0 {
+		accum = 
+		o := 1
+		while 
+	}
+	if max_iter <= 0 {
+
+	}
+}
+
+// Cayley tables?
+//
+// IsFinite: - switch (G.family) ;; if cyclic, easy

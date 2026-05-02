@@ -12,6 +12,8 @@ type GenericGroup[T any] struct {
 	identity T
 	inverse  func(T) T
 	equals func(T, T) bool
+	order int // 0 if infinite
+	family string
 }
 
 func (G GenericGroup[T]) Op(a, b T) T {
