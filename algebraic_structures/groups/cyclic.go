@@ -16,17 +16,25 @@ func createCyclicEquals(n int) {
 			return a == b
 		}
 	}
-	return func(a, b int) int {
+	return func(a, b int) bool {
 		return a % n == b % n
 	}
 }
 
-// maybe, can do inheritance, where this type of group gains an extra field; order
+func isInt(v any) bool {
+	// 5.0 will not be considered an integer; always convert floats.
+    switch v.(type) {
+    case int, int8, int16, int32, int64:
+        return true
+    default:
+        return false
+    }
+}
 
 
 func CyclicGroup(n int) GenericGroup[int], error {
 	if n < 0 {
-		return GenericGruop{}, fmt.Errorf("lol wdym you want a group of order < 0?")
+		return GenericGroup{}, fmt.Errorf("lol wdym you want a group of order < 0?")
 	}
 	C_n := GenericGroup[int]{
 		op: cyclicAdd,
@@ -39,11 +47,11 @@ func CyclicGroup(n int) GenericGroup[int], error {
 	return C_n, nil
 }
 
-func GetAdditiveOrder(x, n int) o int {
+func GetAdditiveOrder(x, n int) int {
 	// gets the additive order of x mod n
 	o := 1
 	accum := x
-	while accum % n != 0 {
+	for accum % n != 0 {
 		accum += x
 		o += 1
 	}
