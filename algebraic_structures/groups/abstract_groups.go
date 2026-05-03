@@ -8,7 +8,7 @@ type Group[T any] interface {
 }
 
 type GenericGroup[T any] struct {
-	indicator func(T) bool
+	indicator func(any) bool
 	op       func(T, T) T
 	identity T
 	inverse  func(T) T

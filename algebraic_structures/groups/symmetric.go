@@ -27,8 +27,12 @@ func isValidPermutationData(data []int) bool {
 	return true
 }
 
-func isValidPermutation(p Permutation) bool {
-	return isValidPermutationData(p.data)
+func isValidPermutation(x any) bool {
+	_, ok := x.(Permutation)
+	if !ok {
+		return false
+	}
+	return isValidPermutationData(x.data)
 }
 
 func makePermutation(data []int) Permutation, error {

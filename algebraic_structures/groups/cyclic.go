@@ -37,6 +37,7 @@ func CyclicGroup(n int) GenericGroup[int], error {
 		return GenericGroup{}, fmt.Errorf("lol wdym you want a group of order < 0?")
 	}
 	C_n := GenericGroup[int]{
+		indicator: isInt
 		op: cyclicAdd,
 		identity: 0,
 		inverse: cyclicInverse,
