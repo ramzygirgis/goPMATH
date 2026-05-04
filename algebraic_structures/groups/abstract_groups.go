@@ -5,10 +5,12 @@ type Group[T any] interface {
 	Identity() T
 	Inverse(a T) T
 	Equals(a, b T) bool
+	Order() int
+	Family() string
+	Contains(a T) bool
 }
 
 type GenericGroup[T any] struct {
-	indicator func(any) bool
 	op       func(T, T) T
 	identity T
 	inverse  func(T) T
@@ -31,4 +33,12 @@ func (G GenericGroup[T]) Inverse(a T) T {
 
 func (G GenericGroup[T]) Equals(a, b T) bool {
 	return G.equals(a, b)
+}
+
+func (G GenericGroup[T]) Order() int {
+	return G.order
+}
+
+func (G GenericGroup[T]) Family() string {
+	return G.family
 }

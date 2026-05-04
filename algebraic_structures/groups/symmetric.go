@@ -16,7 +16,7 @@ func SymmetricGroup(n int) GenericGroup[Permutation], error {
 	idPermutation := Permutation{idPermutationData}
 
 	S_n := GenericGroup[Permutation]{
-		indicator: symmetricGroupIndicator,
+		// indicator: symmetricGroupIndicator,
 		op: permutationComposition,
 		identity: idPermutation,
 		inverse: invertPermutation,
@@ -24,4 +24,11 @@ func SymmetricGroup(n int) GenericGroup[Permutation], error {
 		order: n,
 		family: "symmetric",
 	}
+}
+
+func (G GenericGroup[Permutation]) Contains(p Permutation) {
+	if !isValidPermutation(p) {
+		return false
+	}
+	return len(p.(Permutation).data) <= G.order
 }

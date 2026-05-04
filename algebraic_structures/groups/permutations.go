@@ -27,18 +27,10 @@ func isValidPermutationData(data []int) bool {
 	return true
 }
 
-func isValidPermutation(x any) bool {
-	_, ok := x.(Permutation)
-	if !ok {
-		return false
-	}
+func isValidPermutation(x Permutation) bool {
 	return isValidPermutationData(x.data)
 }
 
-
-func (p Permutation) symmetricGroupIndicator(int n) {
-	return len(p.data) <= n && isValidPermutation(p)
-}
 
 
 func makePermutation(data []int) Permutation, error {
@@ -90,3 +82,7 @@ func (p Permutation) Sgn() int, error {
 }
 
 // add error handling for invalid permutations. this may reduce speed. can potentially add in a "check_validity = True"
+
+
+
+
