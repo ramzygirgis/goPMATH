@@ -10,43 +10,42 @@ func cyclicInverse(a int) int {
 	return -a
 }
 
-func createCyclicEquals(n int) {
+func CyclicGroup(n int) (GenericGroup[int], error) {
+	if n < 0 {
+		return GenericGroup[int]{}, fmt.Errorf("lol wdym you want a group of order < 0?")
+	}
+
+	var equals func(int, int) bool
 	if n == 0 {
-		return func(a, b int) int {
+		equals = func(a, b int) bool {
 			return a == b
 		}
+	} else {
+		equals = func(a, b int) bool {
+			return a % n == b % n
+		}
 	}
-	return func(a, b int) bool {
-		return a % n == b % n
-	}
-}
 
-func isInt(v any) bool {
-	// 5.0 will not be considered an integer; always convert floats.
-    switch v.(type) {
-    case int, int8, int16, int32, int64:
-        return true
-    default:
-        return false
-    }
-}
-
-
-func CyclicGroup(n int) GenericGroup[int], error {
-	if n < 0 {
-		return GenericGroup{}, fmt.Errorf("lol wdym you want a group of order < 0?")
-	}
 	C_n := GenericGroup[int]{
-		indicator: isInt
 		op: cyclicAdd,
 		identity: 0,
 		inverse: cyclicInverse,
-		equals: createCyclicEquals(n),
+		equals: equals,
 		order: n,
-		family: "cyclic"
+		family: "cyclic",
+		contains: func(x int) bool { // useless here tbh
+			return True
+		}
 	}
-	return C_n, nil
+
+func (G GenericGroup[int]) Contains(x int) bool {
+	return G.contains(x)
 }
+
+func (G GenericGroup[int]) Equals(x, y int) bool {
+	return G.equals(x, y)
+}
+
 
 func GetAdditiveOrder(x, n int) int {
 	// gets the additive order of x mod n
