@@ -91,3 +91,17 @@ func SymmetricGroup(n int) GenericGroup[Permutation], error {
 }
 
 
+func Sgn(p Permutation) int, error {
+	inversions := 0
+  for i := 0; i < len(p.data) - 1; i++ {
+		if p.data[i+1] < p.data[i] {
+			inversions += 1
+		}
+  }
+	if inversions % 2 == 0 {
+		return 1
+	}
+	return -1
+}
+
+// add error handling for invalid permutations. this may reduce speed. can potentially add in a "check_validity = True"
