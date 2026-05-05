@@ -27,10 +27,10 @@ func isValidPermutationData(data []int) bool {
 	return true
 }
 
+
 func isValidPermutation(x Permutation) bool {
 	return isValidPermutationData(x.data)
 }
-
 
 
 func makePermutation(data []int) Permutation, error {
@@ -41,11 +41,13 @@ func makePermutation(data []int) Permutation, error {
 }
 
 
-func permutationComposition(f Permutation, g Permutation) Permutation, error {
-	// assumes that permutations are valid
-	if len(f.data) != len(g.data) or Set(f.data) {
+func permutationComposition(f Permutation, g Permutation, objects int) Permutation, error { 
+	if len(f.data) != len(g.data) {
 		// later, can add support for extending one perm to the other
 		return Permutation{}, fmt.Errorf("Incompatible permutations")
+	}
+	if len(f.data) > objects {
+		return Permutation{}, fmt.Errorf("Permutation acts on too many elements")
 	}
 	new_data := make([]int, len(f))
 	for x, y := range f.data {
@@ -85,4 +87,13 @@ func (p Permutation) Sgn() int, error {
 
 
 
+func (p Permutation) extend(n int) Permutation, error {
+	if len(p.data) > n {
+		return Permutation{}, fmt.Errorf("Cannot extend a permutation of length %d to one of length %d", len(p.data), n)
+	}
+	for i := len(p.data); i < n; i++ {
 
+	}
+}
+
+// TODO:make sure that things that should be methods are indeed methods
