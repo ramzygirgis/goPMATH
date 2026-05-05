@@ -2,48 +2,54 @@ package groups
 
 import "fmt"
 
-func cyclicAdd(a, b int) int {
-	return a + b
+type CyclicGroup struct { // this will satisfy the interface for Group[int]. we can make a matrix version, and implement isomorphisms
+	order int // for \mathbb{Z}, order = 0. TODO order shouldn't be negative; find a way to workaround
 }
 
-func cyclicInverse(a int) int {
-	return -a
-}
 
-func CyclicGroup(n int) (GenericGroup[int], error) {
+func CreateCyclicGroup(n int) CyclicGroup, error { 
 	if n < 0 {
-		return GenericGroup[int]{}, fmt.Errorf("lol wdym you want a group of order < 0?")
+		return CyclicGroup{}, fmt.Errorf("Hello??? Cyclic group of negative order???") 
 	}
-
-	var equals func(int, int) bool
-	if n == 0 {
-		equals = func(a, b int) bool {
-			return a == b
-		}
-	} else {
-		equals = func(a, b int) bool {
-			return a % n == b % n
-		}
-	}
-
-	C_n := GenericGroup[int]{
-		op: cyclicAdd,
-		identity: 0,
-		inverse: cyclicInverse,
-		equals: equals,
-		order: n,
-		family: "cyclic",
-		contains: func(x int) bool { // useless here tbh
-			return True
-		}
-	}
-
-func (G GenericGroup[int]) Contains(x int) bool {
-	return G.contains(x)
+	return CyclicGroup{order: n}, nil
 }
 
-func (G GenericGroup[int]) Equals(x, y int) bool {
-	return G.equals(x, y)
+
+func (G CyclicGroup) Op(a, b int) int {
+	return (a + b) % G.order
+}
+
+
+func (G CyclicGroup) Inverse(a int) func(int) int {
+	n := G.order
+	if n == 0 {
+			return -a
+		}
+	return ((-a % n) + n) % n
+}
+
+
+func (G CyclicGroup) Equals(a, b int) bool {
+	n := G.order
+	if n == 0 {
+		return a == b
+	}
+	return a % n == b % n
+}
+
+
+func (G CyclicGroup) Order() int {
+	return G.order
+}
+
+
+func (G CyclicGroup) Family() string {
+	return "cyclic"
+}
+
+
+func (G CyclicGroup) Contains(a int) {
+	return true
 }
 
 
