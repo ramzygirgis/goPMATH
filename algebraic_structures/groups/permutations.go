@@ -33,7 +33,7 @@ func isValidPermutation(x Permutation) bool {
 }
 
 
-func makePermutation(data []int) Permutation, error {
+func MakePermutation(data []int) Permutation, error {
 	if !isValidPermutationData(data) {
 		return Permutation{}, fmt.Errorf("Invalid permutation.\nPlease ensure that all of 1,2,...,n appear in your list in a unique fashion.")
 	}
@@ -42,12 +42,19 @@ func makePermutation(data []int) Permutation, error {
 
 
 func permutationComposition(f Permutation, g Permutation, objects int) Permutation, error { 
-	if len(f.data) != len(g.data) {
-		// later, can add support for extending one perm to the other
-		return Permutation{}, fmt.Errorf("Incompatible permutations")
-	}
-	if len(f.data) > objects {
+	if len(f.data) > objects or len(g.data) > objects {
 		return Permutation{}, fmt.Errorf("Permutation acts on too many elements")
+	}
+	if len(f.data) <= len(g.data) {
+		f, err = f.extend(len(g.data))
+		if err != nil {
+			return Permutation{}, err
+		}
+	} else if len(g.data) < len(f.data) {
+		g, err = g.extend(len(f.data))
+		if err != nil {
+			return Permutation{}, err
+		}
 	}
 	new_data := make([]int, len(f))
 	for x, y := range f.data {
@@ -92,8 +99,11 @@ func (p Permutation) extend(n int) Permutation, error {
 		return Permutation{}, fmt.Errorf("Cannot extend a permutation of length %d to one of length %d", len(p.data), n)
 	}
 	for i := len(p.data); i < n; i++ {
-
+		p.data[i] = i
 	}
+	return p, nil
 }
 
 // TODO:make sure that things that should be methods are indeed methods
+//
+// TODO: update certain methods to pass by ref
