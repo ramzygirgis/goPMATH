@@ -28,16 +28,26 @@ func isValidPermutationData(data []int) bool {
 }
 
 
-func isValidPermutation(x Permutation) bool {
+func (x Permutation) isValidPermutation() bool {
 	return isValidPermutationData(x.data)
 }
 
 
-func MakePermutation(data []int) Permutation, error {
+func MakePermutation(data []int, n int) Permutation, error {
 	if !isValidPermutationData(data) {
 		return Permutation{}, fmt.Errorf("Invalid permutation.\nPlease ensure that all of 1,2,...,n appear in your list in a unique fashion.")
 	}
-	return Permutation{data: data}, nil
+	if n < len(data) {
+		return Permutation{}, fmt.Errorf("Permutation is not in S_n for n = %d", n)
+	}
+	p := Permutation{data: data}
+	if len(data) < n {
+		p, err := p.extend(n)
+		if err != nil {
+			return Permutation{}, err
+		}
+	}
+	return p, nil
 }
 
 
@@ -70,6 +80,7 @@ func (p Permutation) invertPermutation() Permutation {
 	}
 	return Permutation{data: inverted_data}
 }
+
 
 func permutationEqual(f Permutation, g Permutation) bool {
 	// make this EqualTo method??

@@ -9,8 +9,6 @@ import (
 type SymmetricGroup struct {
 	order int // order here is the n in S_n, rather than n!
 }
-
-
 // permutations should be created via MakePermutation to ensure validity
 
 
@@ -35,6 +33,10 @@ func (G SymmetricGroup) Inverse(p Permutation) Permutation, error {
 		return Permutation{}, err
 	}
 	return q, err
+}
+
+func (G SymmetricGroup) Contains(p Permutation) bool {
+	return p.isValidPermutation() && len(p) == G.order
 }
 
 
@@ -67,4 +69,15 @@ func (G GenericGroup[Permutation]) Contains(p Permutation) {
 		return false
 	}
 	return len(p.(Permutation).data) <= G.order
+}
+
+
+func InclusionMap(G1 SymmetricGroup, G2 SymmetricGroup) (func(Permutation) (Permutation, error), error) {
+	if G1.order > G2.order {
+		return nil, fmt.Errorf("There is no inclusion mapping from the first group you passed to the second group you passed")
+	}
+	return func(p Permutation) (permutation, error) {
+		q, err := p.extend(G.order)
+		return q, err
+	}
 }
