@@ -20,22 +20,22 @@ func CreateSymmetricGroup(n int) SymmetricGroup, error{
 }
 
 
-func (G SymmetricGroup) Op(a, b Permutation) Permutation, error {
+func (G SymmetricGroup) Op(a, b permutation) permutation, error {
 	n := G.order
 	p, err := permutationComposition(a, b, n)
 	return p, err
 }
 
-func (G SymmetricGroup) Inverse(p Permutation) Permutation, error {
+func (G SymmetricGroup) Inverse(p permutation) permutation, error {
 	q = p.invertPermutation()
 	q, err := q.extend(G.order)
 	if err != nil {
-		return Permutation{}, err
+		return permutation{}, err
 	}
 	return q, err
 }
 
-func (G SymmetricGroup) Contains(p Permutation) bool {
+func (G SymmetricGroup) Contains(p permutation) bool {
 	return p.isValidPermutation() && len(p) == G.order
 }
 
@@ -43,7 +43,7 @@ func (G SymmetricGroup) Contains(p Permutation) bool {
 
 // TODO:continue implementing symmetric group, modify interface for groups to contain error output, modify cyclic to contain errors
 
-func SymmetricGroup(n int) GenericGroup[Permutation], error {
+func SymmetricGroup(n int) GenericGroup[permutation], error {
 	if n <= 0 {
 		return GenericGroup{}, fmt.Errorf("lol wdym you want symmetric group on %d elements", n)
 	}
@@ -51,9 +51,9 @@ func SymmetricGroup(n int) GenericGroup[Permutation], error {
 	for i := 0; i < n; i++ {
 		idPermutationData[i] = i
 	}
-	idPermutation := Permutation{idPermutationData}
+	idPermutation := permutation{idPermutationData}
 
-	S_n := GenericGroup[Permutation]{
+	S_n := GenericGroup[permutation]{
 		// indicator: symmetricGroupIndicator,
 		op: permutationComposition,
 		identity: idPermutation,
@@ -64,19 +64,19 @@ func SymmetricGroup(n int) GenericGroup[Permutation], error {
 	}
 }
 
-func (G GenericGroup[Permutation]) Contains(p Permutation) {
+func (G GenericGroup[permutation]) Contains(p permutation) {
 	if !isValidPermutation(p) {
 		return false
 	}
-	return len(p.(Permutation).data) <= G.order
+	return len(p.(permutation).data) <= G.order
 }
 
 
-func InclusionMap(G1 SymmetricGroup, G2 SymmetricGroup) (func(Permutation) (Permutation, error), error) {
+func InclusionMap(G1 SymmetricGroup, G2 SymmetricGroup) (func(permutation) (permutation, error), error) {
 	if G1.order > G2.order {
 		return nil, fmt.Errorf("There is no inclusion mapping from the first group you passed to the second group you passed")
 	}
-	return func(p Permutation) (permutation, error) {
+	return func(p permutation) (permutation, error) {
 		q, err := p.extend(G.order)
 		return q, err
 	}
