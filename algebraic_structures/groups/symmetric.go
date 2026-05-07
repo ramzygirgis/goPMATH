@@ -7,7 +7,7 @@ import (
 
 
 type SymmetricGroup struct {
-	degree int // degree here is the n in S_n
+	degree int
 }
 // permutations should be created via NewPermutation to ensure validity
 
@@ -57,26 +57,20 @@ func (G SymmetricGroup) Op(a, b permutation) permutation {
 }
 
 
-func (G SymmetricGroup) Inverse(p permutation) permutation {
-	// ignore error, since we impose that permutations must be created using the NewPermutation method
-	q = p.invertPermutation()
-	q, _ := q.extend(G.degree)
-	return q
-}
-
-
-func (G SymmetricGroup) Contains(p permutation) bool {
-	isValid := (G.IsValidPermutation(p) == nil)
-	return isValid && len(p) == G.degree
-}
-
-
 func (G SymmetricGroup) Identity() int {
 	data = make([]int, G.degree)
 	for i := 0; i < G.degree; i++ {
 		data[i] = i
 	}
 	return permutation{data: data}
+}
+
+
+func (G SymmetricGroup) Inverse(p permutation) permutation {
+	// ignore error, since we impose that permutations must be created using the NewPermutation method
+	q = p.invertPermutation()
+	q, _ := q.extend(G.degree)
+	return q
 }
 
 
@@ -103,9 +97,16 @@ func (G SymmetricGroup) Family() string {
 }
 
 
+func (G SymmetricGroup) Contains(p permutation) bool {
+	isValid := (G.IsValidPermutation(p) == nil)
+	return isValid && len(p) == G.degree
+}
+
+
 func (G SymmetricGroup) Degree() {
 	return G.degree
 }
+
 
 func InclusionMap(G1 SymmetricGroup, G2 SymmetricGroup) (func(permutation) (permutation, error), error) {
 	if G1.degree > G2.degree {
