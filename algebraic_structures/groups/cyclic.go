@@ -20,7 +20,12 @@ func (G CyclicGroup) Op(a, b int) int {
 }
 
 
-func (G CyclicGroup) Inverse(a int) func(int) int {
+func (G CyclicGroup) Identity() int {
+	return 0
+}
+
+
+func (G CyclicGroup) Inverse(a int) int {
 	n := G.order
 	if n == 0 {
 			return -a
