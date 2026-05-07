@@ -52,6 +52,7 @@ func permutationComposition(f permutation, g permutation, objects int) permutati
 	return permutation{data: new_data}, nil
 }
 
+
 func (p permutation) invertPermutation() permutation {
 	inverted_data = make([]int, len(p.data))
 	for x, y := range p.data {

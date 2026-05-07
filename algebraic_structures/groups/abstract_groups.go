@@ -5,7 +5,7 @@ type Group[T any] interface {
 	Identity() T
 	Inverse(a T) T
 	Equals(a, b T) bool
-	Order() int // not sure if I will convert this to size...
+	Order() int // if -1, too big to compute
 	Family() string // not sure if I will keep this
 	Contains(a T) bool
 }
