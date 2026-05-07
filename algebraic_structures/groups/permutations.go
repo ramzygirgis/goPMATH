@@ -10,6 +10,8 @@ type permutation struct {
 	data []int
 }
 
+
+
 func isValidPermutationData(data []int) bool {
 	n := len(data)
 	set := make(map[int]struct{})
@@ -25,29 +27,6 @@ func isValidPermutationData(data []int) bool {
 		}
 	}
 	return true
-}
-
-
-func (x permutation) isValidPermutation() bool {
-	return isValidPermutationData(x.data)
-}
-
-
-func MakePermutation(data []int, n int) permutation, error {
-	if !isValidPermutationData(data) {
-		return permutation{}, fmt.Errorf("Invalid permutation.\nPlease ensure that all of 1,2,...,n appear in your list in a unique fashion.")
-	}
-	if n < len(data) {
-		return permutation{}, fmt.Errorf("Permutation is not in S_n for n = %d", n)
-	}
-	p := permutation{data: data}
-	if len(data) < n {
-		p, err := p.extend(n)
-		if err != nil {
-			return permutation{}, err
-		}
-	}
-	return p, nil
 }
 
 
@@ -102,6 +81,7 @@ func (p permutation) Sgn() int, error {
 }
 
 // add error handling for invalid permutations. this may reduce speed. can potentially add in a "check_validity = True"
+
 
 
 
