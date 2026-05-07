@@ -26,3 +26,14 @@ func gcd(a, b int) int {
 	}
 	return a
 }
+
+
+func lcm(a, b int) int {
+	if a == 0 || b == 0 {
+		return 0
+	}
+	return a * b / gcd(a, b)
+}
+
+
+
