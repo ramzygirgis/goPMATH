@@ -53,6 +53,14 @@ func pAdicVal(n int, p int) int, error {
 }
 
 
+func pAdicValRational(a, b, p int) int {
+	if !isPrime(p){
+		return 0, fmt.Errorf("%d is not prime", p)
+	}
+	return pAdicVal(a) - pAdicVal(b), nil
+}
+
+
 func pAdicValFactorial(n int, p int) {
 	// returns the p-adic valuation of n!
 	if !isPrime(p) {
@@ -66,5 +74,16 @@ func pAdicValFactorial(n int, p int) {
        n /= p
       ans += n
   }
-  return ans
+  return ans, nil
+}
+
+
+func pAdicValBinomial(n, k, p int) int {
+	if !isPrime(p) {
+		return 0, fmt.Errorf("%d is not prime", p)
+	}
+	if n < k {
+		return 0, nil
+	}
+	return pAdicValFactorial(n, p) - pAdicValFactorial(k, p) - pAdicValFactorial(n - k, p), nil
 }
