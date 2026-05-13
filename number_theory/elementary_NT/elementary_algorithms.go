@@ -11,10 +11,8 @@ func abs(a int) int {
 	return a
 }
 
-// AKS, carmicheal, lucas lehmer
 
-
-func gcd(a, b int) int {
+func Gcd(a, b int) int {
 	a = abs(a)
 	b = abs(b)
 
@@ -31,21 +29,24 @@ func gcd(a, b int) int {
 }
 
 
-func lcm(a, b int) int {
+func Lcm(a, b int) int {
 	if a == 0 || b == 0 {
 		return 0
 	}
-	return a * b / gcd(a, b)
+	return abs(a / Gcd(a, b) * b)
 }
 
 
-func pAdicVal(n int, p int) int, error {
+func pAdicVal(n int, p int) (int, error) {
+	if n == 0 {
+		return 0, fmt.Errorf("p-adic valuation of 0 is undefined") // band aid fix for now
+	}
 	if !isPrime(p) { // implement this
 		return 0, fmt.Errorf("%d is not prime", p)
 	}
-	prod = n
-	v_p = 0
-	while prod % p == 0 {
+	prod := abs(n)
+	v_p := 0
+	for prod % p == 0 {
 		prod = prod / p
 		v_p += 1
 	}
@@ -53,15 +54,23 @@ func pAdicVal(n int, p int) int, error {
 }
 
 
-func pAdicValRational(a, b, p int) int {
+func pAdicValRational(a, b, p int) (int, error) {
 	if !isPrime(p){
 		return 0, fmt.Errorf("%d is not prime", p)
 	}
-	return pAdicVal(a) - pAdicVal(b), nil
+	x_a, err := pAdicVal(a, p)
+	if err != nil {
+		return 0, err
+	}
+	x_b, err := pAdicVal(b, p)
+	if err != nil {
+		return 0, err
+	}
+	return x_a - x_b, nil
 }
 
 
-func pAdicValFactorial(n int, p int) {
+func pAdicValFactorial(n int, p int) (int, error) {
 	// returns the p-adic valuation of n!
 	if !isPrime(p) {
 		return 0, fmt.Errorf("%d is not prime", p)
@@ -78,12 +87,24 @@ func pAdicValFactorial(n int, p int) {
 }
 
 
-func pAdicValBinomial(n, k, p int) int {
+func pAdicValBinomial(n, k, p int) (int, error) {
 	if !isPrime(p) {
 		return 0, fmt.Errorf("%d is not prime", p)
 	}
-	if n < k {
-		return 0, nil
+	if n < k { // HANDLE NEGATIVES
+		return pAdicVal(0, p)
 	}
-	return pAdicValFactorial(n, p) - pAdicValFactorial(k, p) - pAdicValFactorial(n - k, p), nil
+	x_1, err := pAdicValFactorial(n, p)
+	if err != nil {
+		return 0, err
+	}
+	x_2, err := pAdicValFactorial(k, p)
+	if err != nil {
+		return 0, err
+	}
+	x_3, err := pAdicValFactorial(n - k, p)
+	if err != nil {
+		return 0, err
+	}
+	return a - b - c, nil
 }
