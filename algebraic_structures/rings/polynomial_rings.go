@@ -32,7 +32,9 @@ func (R Ring[Polynomial[T]]) Add[T any] (f, g Polynomial[T]) Polynomial[T] {
 }
 
 
-
+func (R Ring[Polynomial[T]]) Degree[T any](f Polynomial[T]) {
+	return len(f.coefficients) - 1
+}
 
 
 func (R Ring) PolynomialRing() Ring[[]list] {
