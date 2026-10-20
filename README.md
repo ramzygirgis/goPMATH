@@ -1,3 +1,3 @@
 # goPMATH
 
-Library for computations in Pure Math.
+WIP (Library for computations in Pure Math)
